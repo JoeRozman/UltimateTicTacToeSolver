@@ -29,16 +29,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/jojor/IdeaProjects/SpotifyOrganizer",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jojor\IdeaProjects\UltimateTicTacToeSolver" />
@@ -159,6 +154,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit" />
@@ -167,8 +163,10 @@
     <MESSAGE value="Beginning Shell of Alpha-Beta pruning in ai.py" />
     <option name="LAST_COMMIT_MESSAGE" value="Beginning Shell of Alpha-Beta pruning in ai.py" />
   </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/UltimateTicTacToeSolver$game.coverage" NAME="game Coverage Results" MODIFIED="1663335895433" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/entity" />
-    <SUITE FILE_PATH="coverage/UltimateTicTacToeSolver$referee.coverage" NAME="referee Coverage Results" MODIFIED="1663335885129" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/entity" />
+  <component name="WindowStateProjectService">
+    <state x="384" y="110" key="#Project_Structure" timestamp="1663620543283">
+      <screen x="0" y="25" width="1792" height="1010" />
+    </state>
+    <state x="384" y="110" key="#Project_Structure/0.25.1792.1010@0.25.1792.1010" timestamp="1663620543283" />
   </component>
 </project>
