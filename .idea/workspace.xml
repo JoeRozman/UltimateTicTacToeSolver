@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ce3e6eab-4500-42bf-b08c-7478d359ba35" name="Changes" comment="Added files given to us">
-      <change afterPath="$PROJECT_DIR$/entity/ai.py" afterDir="false" />
+    <list default="true" id="ce3e6eab-4500-42bf-b08c-7478d359ba35" name="Changes" comment="Beginning Shell of Alpha-Beta pruning in ai.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/ai.py" beforeDir="false" afterPath="$PROJECT_DIR$/entity/ai.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,15 +29,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jojor/IdeaProjects/SpotifyOrganizer&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/jojor/IdeaProjects/SpotifyOrganizer",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jojor\IdeaProjects\UltimateTicTacToeSolver" />
@@ -105,7 +106,7 @@
       <option name="presentableId" value="Default" />
       <updated>1663335337925</updated>
       <workItem from="1663335339707" duration="877000" />
-      <workItem from="1663607182875" duration="1950000" />
+      <workItem from="1663607182875" duration="3133000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1663335354528</created>
@@ -135,7 +136,14 @@
       <option name="project" value="LOCAL" />
       <updated>1663336025394</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Beginning Shell of Alpha-Beta pruning in ai.py">
+      <created>1663619101238</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1663619101239</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,7 +164,8 @@
     <MESSAGE value="Initial Commit" />
     <MESSAGE value="Created base packages" />
     <MESSAGE value="Added files given to us" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added files given to us" />
+    <MESSAGE value="Beginning Shell of Alpha-Beta pruning in ai.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Beginning Shell of Alpha-Beta pruning in ai.py" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/UltimateTicTacToeSolver$game.coverage" NAME="game Coverage Results" MODIFIED="1663335895433" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/entity" />
