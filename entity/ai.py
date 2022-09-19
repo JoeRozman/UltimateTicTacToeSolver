@@ -11,7 +11,6 @@ def minimax(depth, node, isMaxPlayer, values, alpha, beta):
 
     if isMaxPlayer:
         V = MIN
-
         for i in range(0, 2):
             # To elaborate if node is like a listNode we would do node.child or something
             val = minimax(depth + 1, node * 2 + i, False, values, alpha, beta)
