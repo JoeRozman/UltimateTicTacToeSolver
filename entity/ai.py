@@ -30,3 +30,15 @@ def minimax(depth, node, isMaxPlayer, values, alpha, beta):
                 break
 
     return V
+
+
+def util_function():
+    # This is going to be a function that given a terminal global board returns the number of points won by the
+    # current player
+    return
+
+
+def eval_function():
+    # Evaluates non-terminal global board configs
+    # Must coincide (be equal to) util_function on terminal global board configs
+    return
