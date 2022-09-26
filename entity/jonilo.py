@@ -6,6 +6,7 @@ MIN = -math.inf
 
 # main function
 def main():
+    # This is a temporary way of calling minimax, will call with proper parameters later
     minimax(0, 0, False, 0, 0, 0)
 
 
