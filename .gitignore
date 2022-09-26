@@ -4,3 +4,5 @@
 /UltimateTicTacToeSolver.iml
 /entity/end_game
 /entity/move_file
+/entity/__pycache__/
+/entity/human.py.go
