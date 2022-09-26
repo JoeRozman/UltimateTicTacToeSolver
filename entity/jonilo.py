@@ -4,16 +4,14 @@ MAX = math.inf
 MIN = -math.inf
 
 
-def minimax(depth, node, isMaxPlayer, values, alpha, beta):
-    # For the future lets think of what node is and depending on it, we will expand accordingly
+def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
     if depth == 3:
-        return values[node]
+        return boardResults[board]
 
     if isMaxPlayer:
         V = MIN
         for i in range(0, 2):
-            # To elaborate if node is like a listNode we would do node.child or something
-            val = minimax(depth + 1, node * 2 + i, False, values, alpha, beta)
+            val = minimax(depth + 1, board * 2 + i, False, boardResults, alpha, beta)
             V = max(V, val)
             alpha = max(alpha, V)
 
@@ -22,7 +20,7 @@ def minimax(depth, node, isMaxPlayer, values, alpha, beta):
     else:
         V = MAX
         for i in range(0, 2):
-            val = minimax(depth + 1, node * 2 + i, True, values, alpha, beta)
+            val = minimax(depth + 1, board * 2 + i, True, boardResults, alpha, beta)
             V = min(V, val)
             beta = min(beta, V)
 
