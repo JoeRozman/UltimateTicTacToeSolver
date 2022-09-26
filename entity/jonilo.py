@@ -41,6 +41,9 @@ def eval_function():
     # Must coincide (be equal to) util_function on terminal global board configs
     return
 
+# main function
+def main():
+    minimax(0, 0, False, 0, 0, 0)
 
 if __name__ == "__main__":
-    minimax(0, 0, False, 0, 0, 0)
+    main()
