@@ -42,3 +42,7 @@ def eval_function():
     # Evaluates non-terminal global board configs
     # Must coincide (be equal to) util_function on terminal global board configs
     return
+
+
+if __name__ == "__main__":
+    minimax(0, 0, False, 0, 0, 0)
