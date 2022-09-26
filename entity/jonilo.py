@@ -4,6 +4,11 @@ MAX = math.inf
 MIN = -math.inf
 
 
+# main function
+def main():
+    minimax(0, 0, False, 0, 0, 0)
+
+
 def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
     if depth == 3:
         return boardResults[board]
@@ -27,6 +32,7 @@ def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
             if beta <= alpha:
                 break
 
+    write_to_move_file(board)
     return V
 
 
@@ -41,9 +47,24 @@ def eval_function():
     # Must coincide (be equal to) util_function on terminal global board configs
     return
 
-# main function
-def main():
-    minimax(0, 0, False, 0, 0, 0)
+
+def write_to_move_file(board):
+    move_file = open("move_file", "w")
+    move_file.write(move_file_output(board))
+    move_file.close()
+
+
+def move_file_output(board):
+    output = ""
+    agentName = "Jonilo"
+    boardNum = "board"
+    locationNum = "location"
+    i = 0
+
+    while i < 4:
+        output += agentName + " " + boardNum + " " + locationNum + " "
+    return output
+
 
 if __name__ == "__main__":
     main()
