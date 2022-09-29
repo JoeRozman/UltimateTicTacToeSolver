@@ -11,6 +11,7 @@ def main():
 
 
 def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
+    print("hello")
     if depth == 3:
         return boardResults[board]
 
