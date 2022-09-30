@@ -42,7 +42,7 @@ def main():
                 location_num = int(tokens[2])
 
                 # Convert to global coordinates
-                global_board_num, global_location_num = local_to_global(board_num, location_num)
+                global_board_num, global_location_num = local_to_global([board_num, location_num])
 
                 # Add move to list
                 moves.append((global_board_num, global_location_num))
@@ -57,7 +57,6 @@ def main():
                 # Write a random move to move file
                 move_file = open("move_file", "w")
                 move_file.write("jonilo.py 2 2")
-
 
 
 def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
@@ -114,7 +113,7 @@ def move_file_output(board):
     i = 0
 
     while i < 4:
-        output += agentName + " " + boardNum + " " + locationNum + " "
+        output += agentName + " " + str(boardNum) + " " + str(locationNum) + " "
     return output
 
 
