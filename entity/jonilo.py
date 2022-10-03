@@ -22,41 +22,71 @@ def main():
     while True:
         if os.path.exists("jonilo.go"):
             exists = True
-            break
-    if exists:
-        with open("move_file", "r") as fp:
-            # Get last non-empty line from file
-            line = ""
-            for next_line in fp.readlines():
-                if next_line.isspace():
-                    break
+            # break
+        if exists:
+            with open("move_file", "r") as fp:
+                # Get last non-empty line from file
+                line = ""
+                for next_line in fp.readlines():
+                    if next_line.isspace():
+                        break
+                    else:
+                        line = next_line
+
+                # Tokenize move
+                tokens = line.split()
+
+                if len(tokens) > 0:
+                    print("tokens: " + str(tokens))
+                    # Get board and location
+                    board_num = int(tokens[1])
+                    location_num = int(tokens[2])
+
+                    # Convert to global coordinates
+                    global_location_num = local_to_global([board_num, location_num])
+
+                    # Add move to list
+                    moves.append((board_num, location_num))
+
+                    # Write to move file
+                    # board location is the last local location that was played
+                    write_to_move_file(location_num)
+
+                    # Remove jonilo.go file
+                    # os.remove("jonilo.go")
+
                 else:
-                    line = next_line
+                    # open first_four_moves and get the last move
+                    with open("first_four_moves", "r") as fp:
+                        # Get last non-empty line from file
+                        line = ""
+                        for next_line in fp.readlines():
+                            if next_line.isspace():
+                                break
+                            else:
+                                line = next_line
 
-            # Tokenize move
-            tokens = line.split()
+                        # Tokenize move
+                        tokens = line.split()
 
-            if len(tokens) > 0:
-                # Get board and location
-                board_num = int(tokens[1])
-                location_num = int(tokens[2])
+                        if len(tokens) > 0:
+                            print("tokens from first_four_moves: " + str(tokens))
+                            # Get board and location
+                            board_num = int(tokens[1])
+                            location_num = int(tokens[2])
 
-                # Convert to global coordinates
-                global_board_num, global_location_num = local_to_global([board_num, location_num])
+                            # Convert to global coordinates
+                            global_location_num = local_to_global([board_num, location_num])
 
-                # Add move to list
-                moves.append((global_board_num, global_location_num))
+                            # Add move to list
+                            moves.append((board_num, location_num))
 
-                # Write to move file
-                write_to_move_file(board_num)
+                            # Write to move file
+                            # board location is the last local location that was played
+                            write_to_move_file(location_num)
 
-                # Remove jonilo.go file
-                os.remove("jonilo.go")
-
-            else:
-                # Write a random move to move file
-                move_file = open("move_file", "w")
-                move_file.write("jonilo.py 2 2")
+                            # Remove jonilo.go file
+                            # os.remove("jonilo.go")
 
 
 def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
@@ -101,7 +131,7 @@ def eval_function():
 
 def write_to_move_file(board):
     move_file = open("move_file", "w")
-    move_file.write("jonilo.py 2 2")
+    move_file.write("jonilo.py" + " " + str(board) + " " + str(2) + "\n")
     move_file.close()
 
 
