@@ -133,15 +133,17 @@ def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
         return V
 
 
-def util_function(currPlayerState, otherPlayerState):
+def util_function(board):
     # This is going to be a function that given a terminal global board returns the number of points won by the
     # current player
-    return currPlayerState - otherPlayerState
+    # Check if there is a check for global board if not we have to implement it ourselves
+    return
 
 
 def eval_function(board):
     # Evaluates non-terminal global board configs
     # Must coincide (be equal to) util_function on terminal global board configs
+    # This also might have to change
     return check_3x3_win(board)
 
 
