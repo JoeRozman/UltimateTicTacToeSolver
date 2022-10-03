@@ -1,5 +1,6 @@
 import math
 import os
+import time
 
 from core_gameplay import NO_MARKER, PLAYER0_MARKER, PLAYER1_MARKER, local_to_global, check_3x3_win
 
@@ -52,8 +53,9 @@ def main():
                     write_to_move_file(location_num)
 
                     # Remove jonilo.go file
-                    os.remove("jonilo.go")
+                    # os.remove("jonilo.go")
                     exists = False
+                    time.sleep(1)
 
                 else:
                     # open first_four_moves and get the last move
@@ -86,8 +88,9 @@ def main():
                             write_to_move_file(location_num)
 
                             # Remove jonilo.go file
-                            os.remove("jonilo.go")
+                            # os.remove("jonilo.go")
                             exists = False
+                            time.sleep(1)
 
 
 def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
