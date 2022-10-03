@@ -98,20 +98,23 @@ def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
     # Implement DRAW and BAD_MOVE cases
 
     if depth == 3:
-        return boardResults[board]
+        return alpha
 
     if isMaxPlayer:
         V = MIN
         for i in range(3):
             for j in range(3):
-                if board[i][j] == NO_MARKER:
+                # Create a temporary board so main board does not have issues
+                tempBoard = board
+
+                if tempBoard[i][j] == NO_MARKER:
                     # PLAYER0_MARKER most likely needs to change
-                    board[i][j] = PLAYER0_MARKER
+                    tempBoard[i][j] = PLAYER0_MARKER
                     val = minimax(depth + 1, board, False, boardResults, alpha, beta)
                     V = max(V, val)
 
                     alpha = max(alpha, V)
-                    board[i][j] = NO_MARKER
+                    tempBoard[i][j] = NO_MARKER
 
                     # This might need to be in the first loop and not second
                     if beta <= alpha:
@@ -122,14 +125,17 @@ def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
         V = MAX
         for i in range(3):
             for j in range(3):
-                if board[i][j] == NO_MARKER:
+                # Create a temporary board so main board does not have issues
+                tempBoard = board
+
+                if tempBoard[i][j] == NO_MARKER:
                     # PLAYER1_MARKER most likely needs to change
-                    board[i][j] = PLAYER1_MARKER
-                    val = minimax(depth + 1, board, True, boardResults, alpha, beta)
+                    tempBoard[i][j] = PLAYER1_MARKER
+                    val = minimax(depth + 1, tempBoard, True, boardResults, alpha, beta)
                     V = min(V, val)
 
                     beta = min(beta, V)
-                    board[i][j] = NO_MARKER
+                    tempBoard[i][j] = NO_MARKER
 
                     if beta <= alpha:
                         break
