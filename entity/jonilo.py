@@ -2,6 +2,8 @@ import math
 import os
 import time
 
+import numpy as np
+
 from core_gameplay import NO_MARKER, PLAYER0_MARKER, PLAYER1_MARKER, local_to_global, check_3x3_win
 
 MAX = math.inf
@@ -19,7 +21,7 @@ def main():
     # then wait for jonilo.go file to be created
     # repeat
     moves = []
-    current_board_state = [[], [], [], [], [], [], [], [], []]
+    current_board_state = np.zeros((9, 9), dtype=int)
     exists = False
     while True:
         if os.path.exists("jonilo.go"):
