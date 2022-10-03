@@ -102,6 +102,7 @@ def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
         for i in range(3):
             for j in range(3):
                 if board[i][j] == NO_MARKER:
+                    # PLAYER0_MARKER most likely needs to change
                     board[i][j] = PLAYER0_MARKER
                     val = minimax(depth + 1, board, False, boardResults, alpha, beta)
                     V = max(V, val)
@@ -119,6 +120,7 @@ def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
         for i in range(3):
             for j in range(3):
                 if board[i][j] == NO_MARKER:
+                    # PLAYER1_MARKER most likely needs to change
                     board[i][j] = PLAYER1_MARKER
                     val = minimax(depth + 1, board, True, boardResults, alpha, beta)
                     V = min(V, val)
@@ -145,6 +147,7 @@ def eval_function(board):
 
 def write_to_move_file(board):
     move_file = open("move_file", "w")
+    # We will want to change this to whatever move that ab pruning finds the most beneficial
     move_file.write("jonilo" + " " + str(board) + " " + str(2) + "\n")
     move_file.close()
 
