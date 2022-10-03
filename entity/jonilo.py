@@ -1,7 +1,7 @@
 import math
 import os
 
-from core_gameplay import BAD_MOVE_DRAW, local_to_global
+from core_gameplay import NO_MARKER, PLAYER0_MARKER, PLAYER1_MARKER, local_to_global, check_3x3_win
 
 MAX = math.inf
 MIN = -math.inf
@@ -91,31 +91,44 @@ def main():
 
 
 def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
-    print("hello")
+    score = eval_function(board)
+    # Implement DRAW and BAD_MOVE cases
+
     if depth == 3:
         return boardResults[board]
 
     if isMaxPlayer:
         V = MIN
-        for i in range(0, 2):
-            val = minimax(depth + 1, board * 2 + i, False, boardResults, alpha, beta)
-            V = max(V, val)
-            alpha = max(alpha, V)
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == NO_MARKER:
+                    board[i][j] = PLAYER0_MARKER
+                    val = minimax(depth + 1, board, False, boardResults, alpha, beta)
+                    V = max(V, val)
 
-            if beta <= alpha:
-                break
+                    alpha = max(alpha, V)
+                    board[i][j] = NO_MARKER
+
+                    # This might need to be in the first loop and not second
+                    if beta <= alpha:
+                        break
+        return V
+
     else:
         V = MAX
-        for i in range(0, 2):
-            val = minimax(depth + 1, board * 2 + i, True, boardResults, alpha, beta)
-            V = min(V, val)
-            beta = min(beta, V)
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == NO_MARKER:
+                    board[i][j] = PLAYER1_MARKER
+                    val = minimax(depth + 1, board, True, boardResults, alpha, beta)
+                    V = min(V, val)
 
-            if beta <= alpha:
-                break
+                    beta = min(beta, V)
+                    board[i][j] = NO_MARKER
 
-    write_to_move_file(board)
-    return V
+                    if beta <= alpha:
+                        break
+        return V
 
 
 def util_function(currPlayerState, otherPlayerState):
@@ -124,10 +137,10 @@ def util_function(currPlayerState, otherPlayerState):
     return currPlayerState - otherPlayerState
 
 
-def eval_function():
+def eval_function(board):
     # Evaluates non-terminal global board configs
     # Must coincide (be equal to) util_function on terminal global board configs
-    return
+    return check_3x3_win(board)
 
 
 def write_to_move_file(board):
