@@ -61,9 +61,9 @@ def main():
                     write_to_move_file(current_board_state)
 
                     # Remove jonilo.go file
-                    # os.remove("jonilo.go")
+                    os.remove("jonilo.go")
                     exists = False
-                    time.sleep(1)
+                    # time.sleep(2)
 
                 else:
                     # open first_four_moves and get the last move
@@ -101,9 +101,9 @@ def main():
                             write_to_move_file(current_board_state)
 
                             # Remove jonilo.go file
-                            # os.remove("jonilo.go")
+                            os.remove("jonilo.go")
                             exists = False
-                            time.sleep(1)
+                            # time.sleep(2)
 
 
 def minimax_decision(board):
@@ -112,7 +112,8 @@ def minimax_decision(board):
 
 
 def minimax_value(depth, board, isMaxPlayer, alpha, beta):
-    score = eval_function(board)
+    # score = eval_function(board)
+    score =0
     # Implement DRAW and BAD_MOVE cases
 
     if depth == 3:
@@ -138,7 +139,7 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta):
                     if beta <= alpha:
                         break
 
-        print(V)
+        # print(V)
         return V
 
     else:
@@ -159,7 +160,7 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta):
 
                     if beta <= alpha:
                         break
-        print(V)
+        # print(V)
         return V
 
 
@@ -181,7 +182,7 @@ def write_to_move_file(board):
     move_file = open("move_file", "w")
     # We will want to change this to whatever move that ab pruning finds the most beneficial
     bestX, bestY = minimax_decision(board)
-    move_file.write("jonilo" + " " + bestX + " " + bestY + "\n")
+    move_file.write("jonilo" + " " + str(bestX) + " " + str(bestY) + "\n")
     move_file.close()
 
 
