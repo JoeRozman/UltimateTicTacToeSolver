@@ -19,6 +19,7 @@ def main():
     # then wait for jonilo.go file to be created
     # repeat
     moves = []
+    current_board_state = [[], [], [], [], [], [], [], [], []]
     exists = False
     while True:
         if os.path.exists("jonilo.go"):
@@ -31,8 +32,13 @@ def main():
                     if next_line.isspace():
                         break
                     else:
+                        current_position = line.split()
+                        if current_position[0] == "jonilo":
+                            current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER0_MARKER
+                        else:
+                            current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER1_MARKER
                         line = next_line
-
+                
                 # Tokenize move
                 tokens = line.split()
 
@@ -50,7 +56,7 @@ def main():
 
                     # Write to move file
                     # board location is the last local location that was played
-                    write_to_move_file(location_num)
+                    write_to_move_file(current_board_state)
 
                     # Remove jonilo.go file
                     # os.remove("jonilo.go")
@@ -66,6 +72,11 @@ def main():
                             if next_line.isspace():
                                 break
                             else:
+                                current_position = line.split()
+                                if current_position[0] == "jonilo":
+                                    current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER0_MARKER
+                                else:
+                                    current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER1_MARKER
                                 line = next_line
 
                         # Tokenize move
@@ -85,7 +96,7 @@ def main():
 
                             # Write to move file
                             # board location is the last local location that was played
-                            write_to_move_file(location_num)
+                            write_to_move_file(current_board_state)
 
                             # Remove jonilo.go file
                             # os.remove("jonilo.go")
