@@ -93,33 +93,39 @@ def main():
                             time.sleep(1)
 
 
-def minimax(depth, board, isMaxPlayer, alpha, beta):
-    score = eval_function(board)
+def minimax_decision(board):
+    minimax_value(0, board, True, MIN, MAX)
+    return[0, 0]
+
+
+def minimax_value(depth, board, isMaxPlayer, alpha, beta):
+    #score = eval_function(board)
     # Implement DRAW and BAD_MOVE cases
 
     if depth == 3:
-        return alpha
+        return 1
 
     if isMaxPlayer:
         V = MIN
         for i in range(3):
             for j in range(3):
                 # Create a temporary board so main board does not have issues
-                tempBoard = board
+                state = board
 
-                if tempBoard[i][j] == NO_MARKER:
+                if state[i][j] == NO_MARKER:
                     # PLAYER0_MARKER most likely needs to change
-                    tempBoard[i][j] = PLAYER0_MARKER
-                    val = minimax(depth + 1, board, False, alpha, beta)
+                    state[i][j] = PLAYER0_MARKER
+                    val = minimax_value(depth + 1, state, False, alpha, beta)
                     V = max(V, val)
 
                     alpha = max(alpha, V)
-                    tempBoard[i][j] = NO_MARKER
+                    state[i][j] = NO_MARKER
 
                     # This might need to be in the first loop and not second
                     if beta <= alpha:
                         break
 
+        print(V)
         return V
 
     else:
@@ -127,19 +133,20 @@ def minimax(depth, board, isMaxPlayer, alpha, beta):
         for i in range(3):
             for j in range(3):
                 # Create a temporary board so main board does not have issues
-                tempBoard = board
+                state = board
 
-                if tempBoard[i][j] == NO_MARKER:
+                if state[i][j] == NO_MARKER:
                     # PLAYER1_MARKER most likely needs to change
-                    tempBoard[i][j] = PLAYER1_MARKER
-                    val = minimax(depth + 1, tempBoard, True, alpha, beta)
+                    state[i][j] = PLAYER1_MARKER
+                    val = minimax_value(depth + 1, state, True, alpha, beta)
                     V = min(V, val)
 
                     beta = min(beta, V)
-                    tempBoard[i][j] = NO_MARKER
+                    state[i][j] = NO_MARKER
 
                     if beta <= alpha:
                         break
+        print(V)
         return V
 
 
@@ -160,7 +167,7 @@ def eval_function(board):
 def write_to_move_file(board):
     move_file = open("move_file", "w")
     # We will want to change this to whatever move that ab pruning finds the most beneficial
-    bestX, bestY = minimax(0, board, True, MIN, MAX)
+    bestX, bestY = minimax_decision(board)
     move_file.write("jonilo" + " " + bestX + " " + bestY + "\n")
     move_file.close()
 
