@@ -22,7 +22,6 @@ def main():
     while True:
         if os.path.exists("jonilo.go"):
             exists = True
-            # break
         if exists:
             with open("move_file", "r") as fp:
                 # Get last non-empty line from file
@@ -53,7 +52,8 @@ def main():
                     write_to_move_file(location_num)
 
                     # Remove jonilo.go file
-                    # os.remove("jonilo.go")
+                    os.remove("jonilo.go")
+                    exists = False
 
                 else:
                     # open first_four_moves and get the last move
@@ -86,7 +86,8 @@ def main():
                             write_to_move_file(location_num)
 
                             # Remove jonilo.go file
-                            # os.remove("jonilo.go")
+                            os.remove("jonilo.go")
+                            exists = False
 
 
 def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
@@ -131,7 +132,7 @@ def eval_function():
 
 def write_to_move_file(board):
     move_file = open("move_file", "w")
-    move_file.write("jonilo.py" + " " + str(board) + " " + str(2) + "\n")
+    move_file.write("jonilo" + " " + str(board) + " " + str(2) + "\n")
     move_file.close()
 
 
