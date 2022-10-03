@@ -93,7 +93,10 @@ def main():
                             time.sleep(1)
 
 
-def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
+def minimax(depth, board, isMaxPlayer, alpha, beta):
+    bestX = 0
+    bestY = 0
+
     score = eval_function(board)
     # Implement DRAW and BAD_MOVE cases
 
@@ -110,7 +113,7 @@ def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
                 if tempBoard[i][j] == NO_MARKER:
                     # PLAYER0_MARKER most likely needs to change
                     tempBoard[i][j] = PLAYER0_MARKER
-                    val = minimax(depth + 1, board, False, boardResults, alpha, beta)
+                    val = minimax(depth + 1, board, False, alpha, beta)
                     V = max(V, val)
 
                     alpha = max(alpha, V)
@@ -119,7 +122,11 @@ def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
                     # This might need to be in the first loop and not second
                     if beta <= alpha:
                         break
-        return V
+
+                    bestX = i
+                    bestY = j
+
+        return [bestX, bestY]
 
     else:
         V = MAX
@@ -131,7 +138,7 @@ def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
                 if tempBoard[i][j] == NO_MARKER:
                     # PLAYER1_MARKER most likely needs to change
                     tempBoard[i][j] = PLAYER1_MARKER
-                    val = minimax(depth + 1, tempBoard, True, boardResults, alpha, beta)
+                    val = minimax(depth + 1, tempBoard, True, alpha, beta)
                     V = min(V, val)
 
                     beta = min(beta, V)
@@ -139,7 +146,11 @@ def minimax(depth, board, isMaxPlayer, boardResults, alpha, beta):
 
                     if beta <= alpha:
                         break
-        return V
+
+                    bestX = i
+                    bestY = j
+
+        return [bestX, bestY]
 
 
 def util_function(board):
@@ -159,7 +170,8 @@ def eval_function(board):
 def write_to_move_file(board):
     move_file = open("move_file", "w")
     # We will want to change this to whatever move that ab pruning finds the most beneficial
-    move_file.write("jonilo" + " " + str(board) + " " + str(2) + "\n")
+    bestX, bestY = minimax(0, board, True, MIN, MAX)
+    move_file.write("jonilo" + " " + bestX + " " + bestY + "\n")
     move_file.close()
 
 
