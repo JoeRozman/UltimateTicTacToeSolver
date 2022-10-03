@@ -94,9 +94,6 @@ def main():
 
 
 def minimax(depth, board, isMaxPlayer, alpha, beta):
-    bestX = 0
-    bestY = 0
-
     score = eval_function(board)
     # Implement DRAW and BAD_MOVE cases
 
@@ -123,10 +120,7 @@ def minimax(depth, board, isMaxPlayer, alpha, beta):
                     if beta <= alpha:
                         break
 
-                    bestX = i
-                    bestY = j
-
-        return [bestX, bestY]
+        return V
 
     else:
         V = MAX
@@ -146,11 +140,7 @@ def minimax(depth, board, isMaxPlayer, alpha, beta):
 
                     if beta <= alpha:
                         break
-
-                    bestX = i
-                    bestY = j
-
-        return [bestX, bestY]
+        return V
 
 
 def util_function(board):
