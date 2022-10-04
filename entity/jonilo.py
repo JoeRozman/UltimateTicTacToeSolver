@@ -1,14 +1,31 @@
 import math
 import os
-import time
-from tkinter.messagebox import NO
+# import time
+# from tkinter.messagebox import NO
 
 import numpy as np
 
-from core_gameplay import NO_MARKER, PLAYER0_MARKER, PLAYER1_MARKER, local_to_global, check_3x3_win, valid_moves, valid_moves_3x3_global
+from core_gameplay import local_to_global, valid_moves, valid_moves_3x3_global
 
 MAX = math.inf
 MIN = -math.inf
+
+EMPTY_SPACE = 0
+JONILO_MARKER = 1
+OPPONENT_MARKER = 2
+
+LOSS = -1
+DRAW = 0
+WIN = 1
+
+WIN_INDEXES = [[0, 1, 2],
+               [3, 4, 5],
+               [6, 7, 8],
+               [0, 4, 8],
+               [6, 4, 2],
+               [0, 3, 6],
+               [1, 4, 7],
+               [2, 5, 8]]
 
 
 # main function
@@ -37,7 +54,7 @@ def main():
                 get_last_move_and_board("move_file")
                 os.remove("jonilo.go")
                 exists = False
-                
+
 
 def get_last_move_and_board(file_name_to_open):
     current_board_state = np.zeros((9, 9), dtype=int)
@@ -52,9 +69,9 @@ def get_last_move_and_board(file_name_to_open):
                 line = next_line
                 current_position = line.split()
                 if current_position[0] == "jonilo":
-                    current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER0_MARKER
+                    current_board_state[int(current_position[1])][int(current_position[2])] = JONILO_MARKER
                 else:
-                    current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER1_MARKER
+                    current_board_state[int(current_position[1])][int(current_position[2])] = OPPONENT_MARKER
 
     # Tokenize move
     tokens = line.split()
@@ -74,8 +91,8 @@ def get_last_move_and_board(file_name_to_open):
     else:
         return False
 
-def minimax_decision(board, local_board_to_play):
 
+def minimax_decision(board, local_board_to_play):
     # get all valid moves
     valid_moves_list = valid_moves(board, local_board_to_play, False)
 
@@ -86,16 +103,16 @@ def minimax_decision(board, local_board_to_play):
 
             state = board
 
-            if state[i][j] == NO_MARKER:
+            if state[i][j] == EMPTY_SPACE:
 
-                state[i][j] = PLAYER0_MARKER
+                state[i][j] = JONILO_MARKER
                 value = minimax_value(0, state, False, MIN, MAX, local_board_to_play)
 
                 if value > bestValue and (i, j) in valid_moves_list:
-                    bestCoord = [i,j]
+                    bestCoord = [i, j]
                     bestValue = value
 
-                state[i][j] = NO_MARKER
+                state[i][j] = EMPTY_SPACE
     return bestCoord
 
 
@@ -104,7 +121,8 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
     if local_board_to_play == -1:
         for i in range(0, 9):
             moves += valid_moves_3x3_global(board[i], i, isMaxPlayer)
-        score = util_function(board)
+        if not moves:
+            return util_function(board)
     else:
         moves = valid_moves_3x3_global(board[local_board_to_play], local_board_to_play, isMaxPlayer)
         score = eval_function(board, local_board_to_play)
@@ -114,8 +132,6 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
     # else:
     #     score = eval_function(board, isMaxPlayer)
     # Implement DRAW and BAD_MOVE cases
-
-    
 
     print("score: " + str(score))
 
@@ -129,14 +145,14 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
                 # Create a temporary board so main board does not have issues
                 state = board
 
-                if state[i][j] == NO_MARKER:
-                    # PLAYER0_MARKER most likely needs to change
-                    state[i][j] = PLAYER0_MARKER
+                if state[i][j] == EMPTY_SPACE:
+                    # JONILO_MARKER most likely needs to change
+                    state[i][j] = JONILO_MARKER
                     val = minimax_value(depth + 1, state, False, alpha, beta, local_board_to_play)
                     V = max(V, val)
 
                     alpha = max(alpha, V)
-                    state[i][j] = NO_MARKER
+                    state[i][j] = EMPTY_SPACE
 
                     # This might need to be in the first loop and not second
                     if beta <= alpha:
@@ -152,14 +168,14 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
                 # Create a temporary board so main board does not have issues
                 state = board
 
-                if state[i][j] == NO_MARKER:
-                    # PLAYER1_MARKER most likely needs to change
-                    state[i][j] = PLAYER1_MARKER
+                if state[i][j] == EMPTY_SPACE:
+                    # OPPONENT_MARKER most likely needs to change
+                    state[i][j] = OPPONENT_MARKER
                     val = minimax_value(depth + 1, state, True, alpha, beta, local_board_to_play)
                     V = min(V, val)
 
                     beta = min(beta, V)
-                    state[i][j] = NO_MARKER
+                    state[i][j] = EMPTY_SPACE
 
                     if beta <= alpha:
                         break
@@ -171,7 +187,11 @@ def util_function(board):
     # This is going to be a function that given a terminal global board returns the number of points won by the
     # current player
     # Check if there is a check for global board if not we have to implement it ourselves
-    return
+
+    if EMPTY_SPACE not in board:
+        return DRAW
+    else:
+        return WIN
 
 
 def eval_function(board, local_board_to_play):
@@ -179,10 +199,9 @@ def eval_function(board, local_board_to_play):
     # Evaluates non-terminal global board configs
     # Must coincide (be equal to) util_function on terminal global board configs
     # This also might have to change
-    all_valid_moves = valid_moves_3x3_global(board, local_board_to_play, False)
+    # all_valid_moves = valid_moves_3x3_global(board, local_board_to_play, False)
     # convert to local coordinates
-    
-
+    return DRAW
 
 
 def write_to_move_file(board, local_board_to_play):
