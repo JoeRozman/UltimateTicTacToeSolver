@@ -17,7 +17,11 @@ OPPONENT_MARKER = 2
 LOSS = -1
 DRAW = 0
 WIN = 1
+
+BIG_BOARD_REP_LOSS = -10
+BIG_BOARD_REP_DRAW = 0
 BIG_BOARD_REP_WIN = 10
+
 BOARD = np.zeros((9, 9), dtype=int)
 BIG_BOARD_REP = np.zeros((9), dtype=int)
 
@@ -60,8 +64,6 @@ def main():
 
 
 def get_last_move_and_board(file_name_to_open):
-
-
     with open(file_name_to_open, "r") as fp:
         # Get last non-empty line from file
         line = ""
@@ -109,7 +111,6 @@ def minimax_decision(board, local_board_to_play):
     bestCoord = [-1, -1]
     for i in range(9):
         for j in range(9):
-
             state = board
 
             if state[i][j] == EMPTY_SPACE:
@@ -120,6 +121,7 @@ def minimax_decision(board, local_board_to_play):
                 if value > bestValue and [i, j] in valid_moves_list_3x3:
                     bestCoord = [i, j]
                     bestValue = value
+                    print(bestValue)
 
                 state[i][j] = EMPTY_SPACE
     print(f"Best Coordinate: {bestCoord}")
@@ -207,10 +209,14 @@ def util_function(board):
         return DRAW
     else:
         for indices in WIN_INDICES:
-                if BIG_BOARD_REP[indices[0]].any() == JONILO_MARKER and \
-                        BIG_BOARD_REP[indices[1]].any() == JONILO_MARKER and \
-                        BIG_BOARD_REP[indices[2]].any() == JONILO_MARKER:
-                    return BIG_BOARD_REP_WIN
+            if BIG_BOARD_REP[indices[0]].any() == JONILO_MARKER and \
+                    BIG_BOARD_REP[indices[1]].any() == JONILO_MARKER and \
+                    BIG_BOARD_REP[indices[2]].any() == JONILO_MARKER:
+                return BIG_BOARD_REP_WIN
+            elif BIG_BOARD_REP[indices[0]].any() == OPPONENT_MARKER and \
+                    BIG_BOARD_REP[indices[1]].any() == OPPONENT_MARKER and \
+                    BIG_BOARD_REP[indices[2]].any() == OPPONENT_MARKER:
+                return BIG_BOARD_REP_LOSS
 
     return DRAW
 
@@ -234,6 +240,8 @@ def eval_function(board, local_board_to_play):
                 BIG_BOARD_REP[local_board_to_play] = JONILO_MARKER
                 if util_function(BIG_BOARD_REP.any()) == BIG_BOARD_REP_WIN:
                     return BIG_BOARD_REP_WIN
+                elif util_function(BIG_BOARD_REP.any()) == BIG_BOARD_REP_LOSS:
+                    return BIG_BOARD_REP_LOSS
                 return WIN
 
     return DRAW
