@@ -18,7 +18,7 @@ LOSS = -1
 DRAW = 0
 WIN = 1
 
-WIN_INDEXES = [[0, 1, 2],
+WIN_INDICES = [[0, 1, 2],
                [3, 4, 5],
                [6, 7, 8],
                [0, 4, 8],
@@ -95,17 +95,15 @@ def get_last_move_and_board(file_name_to_open):
 def minimax_decision(board, local_board_to_play):
     # get all valid moves
     valid_moves_list = valid_moves(board, local_board_to_play, False)
-    print(valid_moves_list)
     valid_moves_list_3x3 = []
 
     for moves in valid_moves_list:
         local_move = global_to_local(moves)
         local_move.reverse()
-        print(local_move)
         valid_moves_list_3x3.append(local_move)
 
     bestValue = -2
-    bestCoord = [0, 0]
+    bestCoord = [-1, -1]
     for i in range(9):
         for j in range(9):
 
@@ -121,7 +119,7 @@ def minimax_decision(board, local_board_to_play):
                     bestValue = value
 
                 state[i][j] = EMPTY_SPACE
-    print(bestCoord)
+    print(f"Best Coordinate: {bestCoord}")
     return bestCoord
 
 
@@ -149,8 +147,8 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
 
     if isMaxPlayer:
         V = MIN
-        for i in range(3):
-            for j in range(3):
+        for i in range(9):
+            for j in range(9):
                 # Create a temporary board so main board does not have issues
                 state = board
 
@@ -172,8 +170,8 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
 
     else:
         V = MAX
-        for i in range(3):
-            for j in range(3):
+        for i in range(9):
+            for j in range(9):
                 # Create a temporary board so main board does not have issues
                 state = board
 
@@ -200,7 +198,14 @@ def util_function(board):
     if EMPTY_SPACE not in board:
         return DRAW
     else:
-        return WIN
+        for indices in WIN_INDICES:
+            # print(board[indices[0]])
+            if board[indices[0]].any() == board[indices[1]].any() and \
+                    board[indices[1]].any() == board[indices[2]].any() and \
+                    board[indices[0]].any() != EMPTY_SPACE:
+                return WIN
+
+    return DRAW
 
 
 def eval_function(board, local_board_to_play):
@@ -210,14 +215,26 @@ def eval_function(board, local_board_to_play):
     # This also might have to change
     # all_valid_moves = valid_moves_3x3_global(board, local_board_to_play, False)
     # convert to local coordinates
+    if EMPTY_SPACE not in board:
+        return DRAW
+    else:
+        # print(board[WIN_INDICES[0][0]])
+        for indices in WIN_INDICES:
+            if board[indices[0]].any() == board[indices[1]].any() and \
+                    board[indices[1]].any() == board[indices[2]].any() and \
+                    board[indices[0]].any() != EMPTY_SPACE:
+                return WIN
+
     return DRAW
 
 
 def write_to_move_file(board, local_board_to_play):
-    move_file = open("move_file", "w")
+    move_file = open("move_file", "r+")
     # We will want to change this to whatever move that ab pruning finds the most beneficial
     best_coord = minimax_decision(board, local_board_to_play)
+    move_file.seek(0)
     move_file.write("jonilo" + " " + str(best_coord[0]) + " " + str(best_coord[1]) + "\n")
+    move_file.truncate()
     move_file.close()
 
 
