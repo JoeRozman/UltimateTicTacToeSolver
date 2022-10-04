@@ -5,7 +5,7 @@ import os
 
 import numpy as np
 
-from core_gameplay import local_to_global, valid_moves, valid_moves_3x3_global
+from core_gameplay import local_to_global, global_to_local, valid_moves, valid_moves_3x3_global
 
 MAX = math.inf
 MIN = -math.inf
@@ -95,11 +95,19 @@ def get_last_move_and_board(file_name_to_open):
 def minimax_decision(board, local_board_to_play):
     # get all valid moves
     valid_moves_list = valid_moves(board, local_board_to_play, False)
+    print(valid_moves_list)
+    valid_moves_list_3x3 = []
 
-    bestValue = 0
+    for moves in valid_moves_list:
+        local_move = global_to_local(moves)
+        local_move.reverse()
+        print(local_move)
+        valid_moves_list_3x3.append(local_move)
+
+    bestValue = -2
     bestCoord = [0, 0]
-    for i in range(3):
-        for j in range(3):
+    for i in range(9):
+        for j in range(9):
 
             state = board
 
@@ -108,11 +116,12 @@ def minimax_decision(board, local_board_to_play):
                 state[i][j] = JONILO_MARKER
                 value = minimax_value(0, state, False, MIN, MAX, local_board_to_play)
 
-                if value > bestValue and (i, j) in valid_moves_list:
+                if value > bestValue and [i, j] in valid_moves_list_3x3:
                     bestCoord = [i, j]
                     bestValue = value
 
                 state[i][j] = EMPTY_SPACE
+    print(bestCoord)
     return bestCoord
 
 
@@ -121,6 +130,7 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
     if local_board_to_play == -1:
         for i in range(0, 9):
             moves += valid_moves_3x3_global(board[i], i, isMaxPlayer)
+        score = eval_function(board, local_board_to_play)
     else:
         moves = valid_moves_3x3_global(board[local_board_to_play], local_board_to_play, isMaxPlayer)
         score = eval_function(board, local_board_to_play)
@@ -134,9 +144,7 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
     #     score = eval_function(board, isMaxPlayer)
     # Implement DRAW and BAD_MOVE cases
 
-    print("score: " + str(score))
-
-    if depth == 3:
+    if depth == 1:
         return score
 
     if isMaxPlayer:
