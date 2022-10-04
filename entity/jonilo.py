@@ -17,7 +17,7 @@ OPPONENT_MARKER = 2
 LOSS = -1
 DRAW = 0
 WIN = 1
-current_board_state = np.zeros((9, 9), dtype=int)
+BOARD = np.zeros((9, 9), dtype=int)
 
 WIN_INDICES = [[0, 1, 2],
                [3, 4, 5],
@@ -70,9 +70,9 @@ def get_last_move_and_board(file_name_to_open):
                 line = next_line
                 current_position = line.split()
                 if current_position[0] == "jonilo":
-                    current_board_state[int(current_position[1])][int(current_position[2])] = JONILO_MARKER
+                    BOARD[int(current_position[1])][int(current_position[2])] = JONILO_MARKER
                 else:
-                    current_board_state[int(current_position[1])][int(current_position[2])] = OPPONENT_MARKER
+                    BOARD[int(current_position[1])][int(current_position[2])] = OPPONENT_MARKER
 
     # Tokenize move
     tokens = line.split()
@@ -88,7 +88,7 @@ def get_last_move_and_board(file_name_to_open):
 
         # Write to move file
         # board location is the last local location that was played
-        write_to_move_file(current_board_state, location_num)
+        write_to_move_file(BOARD, location_num)
     else:
         return False
 
