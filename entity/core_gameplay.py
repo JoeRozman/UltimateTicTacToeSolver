@@ -31,9 +31,9 @@ WIN_INDEXES = [[0, 1, 2],
 # Returns the winner marker of the board
 def check_3x3_win(board):
     for indexes in WIN_INDEXES:
-        if board[indexes[0]] == board[indexes[1]] and \
-                board[indexes[1]] == board[indexes[2]] and \
-                board[indexes[0]] != NO_MARKER:
+        if board[indexes[0]].any() == board[indexes[1]].any() and \
+                board[indexes[1]].any() == board[indexes[2]].any() and \
+                board[indexes[0]].any() != NO_MARKER:
             return board[indexes[0]]
 
     # If no one has won but the board is full, is draw
@@ -100,7 +100,7 @@ def valid_moves_3x3(board, can_move_in_won_board):
             return moves
 
     for i in range(0, 9):
-        val = board[i]
+        val = board[i].any()
         if val == NO_MARKER:
             moves.append(i)
     return moves
