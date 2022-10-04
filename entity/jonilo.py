@@ -2,6 +2,7 @@ import math
 import os
 # import time
 # from tkinter.messagebox import NO
+import time
 
 import numpy as np
 
@@ -46,6 +47,7 @@ def main():
     # then wait for jonilo.go file to be created
     # repeat
     exists = False
+    print(BIG_BOARD_REP)
     while True:
         if os.path.exists("jonilo.go"):
             exists = True
@@ -82,7 +84,7 @@ def get_last_move_and_board(file_name_to_open):
     tokens = line.split()
 
     if len(tokens) > 0:
-        print("tokens from first_four_moves: " + str(tokens))
+        print("tokens: " + file_name_to_open + " " + str(tokens))
         # Get board and location
         board_num = int(tokens[1])
         location_num = int(tokens[2])
@@ -107,8 +109,9 @@ def minimax_decision(board, local_board_to_play):
         local_move.reverse()
         valid_moves_list_3x3.append(local_move)
 
-    bestValue = -2
-    bestCoord = [-1, -1]
+    bestValue = MIN
+    bestCoord = [MIN, MIN]
+
     for i in range(9):
         for j in range(9):
             state = board
@@ -233,16 +236,24 @@ def eval_function(board, local_board_to_play):
     else:
         # print(board[WIN_INDICES[0][0]])
         for indices in WIN_INDICES:
-            if board[indices[0]].any() == board[indices[1]].any() and \
-                    board[indices[1]].any() == board[indices[2]].any() and \
-                    board[indices[0]].any() != EMPTY_SPACE:
+            #print(f"{indices[0]} {indices[1]} {indices[2]}")
+            #print(BIG_BOARD_REP)
+            #print(board[local_board_to_play][indices])
+            if board[local_board_to_play][indices[0]].any() == JONILO_MARKER and \
+                    board[local_board_to_play][indices[1]].any() == JONILO_MARKER and \
+                    board[local_board_to_play][indices[2]].any() == JONILO_MARKER:
                 # mark the BIG_BOARD_REP with the winner
                 BIG_BOARD_REP[local_board_to_play] = JONILO_MARKER
                 if util_function(BIG_BOARD_REP.any()) == BIG_BOARD_REP_WIN:
                     return BIG_BOARD_REP_WIN
-                elif util_function(BIG_BOARD_REP.any()) == BIG_BOARD_REP_LOSS:
-                    return BIG_BOARD_REP_LOSS
                 return WIN
+            elif board[indices[0]].any() == OPPONENT_MARKER and \
+                    board[indices[1]].any() == OPPONENT_MARKER and \
+                    board[indices[2]].any() == OPPONENT_MARKER:
+                BIG_BOARD_REP[local_board_to_play] = JONILO_MARKER
+                if util_function(BIG_BOARD_REP.any()) == BIG_BOARD_REP_WIN:
+                    return BIG_BOARD_REP_LOSS
+                return LOSS
 
     return DRAW
 
