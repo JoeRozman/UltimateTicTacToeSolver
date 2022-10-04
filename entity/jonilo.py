@@ -18,6 +18,7 @@ LOSS = -1
 DRAW = 0
 WIN = 1
 BOARD = np.zeros((9, 9), dtype=int)
+BIG_BOARD_REP = np.zeros((3, 3), dtype=int)
 
 WIN_INDICES = [[0, 1, 2],
                [3, 4, 5],
@@ -122,7 +123,7 @@ def minimax_decision(board, local_board_to_play):
                 state[i][j] = EMPTY_SPACE
     print(f"Best Coordinate: {bestCoord}")
     board[bestCoord[0]][bestCoord[1]] = JONILO_MARKER
-    print(board)
+    # print(board)
     return bestCoord
 
 
@@ -198,15 +199,14 @@ def util_function(board):
     # current player
     # Check if there is a check for global board if not we have to implement it ourselves
 
-    if EMPTY_SPACE not in board:
+    if EMPTY_SPACE not in BIG_BOARD_REP:
         return DRAW
     else:
         for indices in WIN_INDICES:
-            # print(board[indices[0]])
-            if board[indices[0]].any() == board[indices[1]].any() and \
-                    board[indices[1]].any() == board[indices[2]].any() and \
-                    board[indices[0]].any() != EMPTY_SPACE:
-                return WIN
+                if BIG_BOARD_REP[indices[0]].any() == BIG_BOARD_REP[indices[1]].any() and \
+                        BIG_BOARD_REP[indices[1]].any() == BIG_BOARD_REP[indices[2]].any() and \
+                        BIG_BOARD_REP[indices[0]].any() != EMPTY_SPACE:
+                    return WIN
 
     return DRAW
 
