@@ -121,11 +121,12 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
     if local_board_to_play == -1:
         for i in range(0, 9):
             moves += valid_moves_3x3_global(board[i], i, isMaxPlayer)
-        if not moves:
-            return util_function(board)
     else:
         moves = valid_moves_3x3_global(board[local_board_to_play], local_board_to_play, isMaxPlayer)
         score = eval_function(board, local_board_to_play)
+
+    if not moves:
+        return util_function(board)
 
     # if not valid_moves_3x3_global(board, local_board_to_play, isMaxPlayer):
     #     score = util_function(board)
