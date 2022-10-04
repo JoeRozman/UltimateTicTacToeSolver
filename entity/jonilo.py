@@ -17,6 +17,7 @@ OPPONENT_MARKER = 2
 LOSS = -1
 DRAW = 0
 WIN = 1
+current_board_state = np.zeros((9, 9), dtype=int)
 
 WIN_INDICES = [[0, 1, 2],
                [3, 4, 5],
@@ -57,7 +58,7 @@ def main():
 
 
 def get_last_move_and_board(file_name_to_open):
-    current_board_state = np.zeros((9, 9), dtype=int)
+
 
     with open(file_name_to_open, "r") as fp:
         # Get last non-empty line from file
