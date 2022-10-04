@@ -21,91 +21,58 @@ def main():
     # then delete jonilo.go file
     # then wait for jonilo.go file to be created
     # repeat
-    moves = []
-    current_board_state = np.zeros((9, 9), dtype=int)
     exists = False
     while True:
         if os.path.exists("jonilo.go"):
             exists = True
         if exists:
-            with open("move_file", "r") as fp:
-                # Get last non-empty line from file
-                line = ""
-                for next_line in fp.readlines():
-                    if next_line.isspace():
-                        break
-                    else:
-                        line = next_line
-                        current_position = line.split()
-                        if current_position[0] == "jonilo":
-                            current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER0_MARKER
-                        else:
-                            current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER1_MARKER
+            # check if move_file is empty
+            if os.stat("move_file").st_size == 0:
+                # if it is empty, then write to move_file
+                get_last_move_and_board("first_four_moves")
+                os.remove("jonilo.go")
+                exists = False
+            else:
+                # if it is not empty, then read the move_file and make the move
+                get_last_move_and_board("move_file")
+                os.remove("jonilo.go")
+                exists = False
                 
-                # Tokenize move
-                tokens = line.split()
 
-                if len(tokens) > 0:
-                    print("tokens: " + str(tokens))
-                    # Get board and location
-                    board_num = int(tokens[1])
-                    location_num = int(tokens[2])
+def get_last_move_and_board(file_name_to_open):
+    current_board_state = np.zeros((9, 9), dtype=int)
 
-                    # Convert to global coordinates
-                    global_location_num = local_to_global([board_num, location_num])
-
-                    # Add move to list
-                    moves.append((board_num, location_num))
-
-                    # Write to move file
-                    # board location is the last local location that was played
-                    write_to_move_file(current_board_state, location_num)
-
-                    # Remove jonilo.go file
-                    os.remove("jonilo.go")
-                    exists = False
-                    # time.sleep(2)
-
+    with open(file_name_to_open, "r") as fp:
+        # Get last non-empty line from file
+        line = ""
+        for next_line in fp.readlines():
+            if next_line.isspace():
+                break
+            else:
+                line = next_line
+                current_position = line.split()
+                if current_position[0] == "jonilo":
+                    current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER0_MARKER
                 else:
-                    # open first_four_moves and get the last move
-                    with open("first_four_moves", "r") as fp:
-                        # Get last non-empty line from file
-                        line = ""
-                        for next_line in fp.readlines():
-                            if next_line.isspace():
-                                break
-                            else:
-                                line = next_line
-                                current_position = line.split()
-                                if current_position[0] == "jonilo":
-                                    current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER0_MARKER
-                                else:
-                                    current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER1_MARKER
+                    current_board_state[int(current_position[1])][int(current_position[2])] = PLAYER1_MARKER
 
-                        # Tokenize move
-                        tokens = line.split()
+    # Tokenize move
+    tokens = line.split()
 
-                        if len(tokens) > 0:
-                            print("tokens from first_four_moves: " + str(tokens))
-                            # Get board and location
-                            board_num = int(tokens[1])
-                            location_num = int(tokens[2])
+    if len(tokens) > 0:
+        print("tokens from first_four_moves: " + str(tokens))
+        # Get board and location
+        board_num = int(tokens[1])
+        location_num = int(tokens[2])
 
-                            # Convert to global coordinates
-                            global_location_num = local_to_global([board_num, location_num])
+        # Convert to global coordinates
+        global_location_num = local_to_global([board_num, location_num])
 
-                            # Add move to list
-                            moves.append((board_num, location_num))
-
-                            # Write to move file
-                            # board location is the last local location that was played
-                            write_to_move_file(current_board_state, location_num)
-
-                            # Remove jonilo.go file
-                            os.remove("jonilo.go")
-                            exists = False
-                            # time.sleep(2)
-
+        # Write to move file
+        # board location is the last local location that was played
+        write_to_move_file(current_board_state, location_num)
+    else:
+        return False
 
 def minimax_decision(board, local_board_to_play):
 
