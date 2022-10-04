@@ -1,10 +1,11 @@
 import math
 import os
 import time
+from tkinter.messagebox import NO
 
 import numpy as np
 
-from core_gameplay import NO_MARKER, PLAYER0_MARKER, PLAYER1_MARKER, local_to_global, check_3x3_win
+from core_gameplay import NO_MARKER, PLAYER0_MARKER, PLAYER1_MARKER, local_to_global, check_3x3_win, valid_moves, valid_moves_3x3_global
 
 MAX = math.inf
 MIN = -math.inf
@@ -58,7 +59,7 @@ def main():
 
                     # Write to move file
                     # board location is the last local location that was played
-                    write_to_move_file(current_board_state)
+                    write_to_move_file(current_board_state, location_num)
 
                     # Remove jonilo.go file
                     os.remove("jonilo.go")
@@ -98,7 +99,7 @@ def main():
 
                             # Write to move file
                             # board location is the last local location that was played
-                            write_to_move_file(current_board_state)
+                            write_to_move_file(current_board_state, location_num)
 
                             # Remove jonilo.go file
                             os.remove("jonilo.go")
@@ -106,15 +107,40 @@ def main():
                             # time.sleep(2)
 
 
-def minimax_decision(board):
-    minimax_value(0, board, True, MIN, MAX)
-    return[0, 0]
+def minimax_decision(board, local_board_to_play):
+
+    # get all valid moves
+    valid_moves_list = valid_moves(board, local_board_to_play, False)
+
+    bestValue = 0
+    bestCoord = [0, 0]
+    for i in range(3):
+        for j in range(3):
+
+            state = board
+
+            if state[i][j] == NO_MARKER:
+
+                state[i][j] = PLAYER0_MARKER
+                value = minimax_value(0, state, False, MIN, MAX, local_board_to_play)
+
+                if value > bestValue and (i, j) in valid_moves_list:
+                    bestCoord = [i,j]
+                    bestValue = value
+
+                state[i][j] = NO_MARKER
+    return bestCoord
 
 
-def minimax_value(depth, board, isMaxPlayer, alpha, beta):
-    # score = eval_function(board)
-    score =0
+def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
+    if(valid_moves_3x3_global(board, local_board_to_play, isMaxPlayer) == []):
+        score = util_function(board)
+    else:
+        score = eval_function(board, isMaxPlayer)
+    # score = 0	
     # Implement DRAW and BAD_MOVE cases
+
+    print("score: " + str(score))
 
     if depth == 3:
         return score
@@ -129,7 +155,7 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta):
                 if state[i][j] == NO_MARKER:
                     # PLAYER0_MARKER most likely needs to change
                     state[i][j] = PLAYER0_MARKER
-                    val = minimax_value(depth + 1, state, False, alpha, beta)
+                    val = minimax_value(depth + 1, state, False, alpha, beta, local_board_to_play)
                     V = max(V, val)
 
                     alpha = max(alpha, V)
@@ -152,7 +178,7 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta):
                 if state[i][j] == NO_MARKER:
                     # PLAYER1_MARKER most likely needs to change
                     state[i][j] = PLAYER1_MARKER
-                    val = minimax_value(depth + 1, state, True, alpha, beta)
+                    val = minimax_value(depth + 1, state, True, alpha, beta, local_board_to_play)
                     V = min(V, val)
 
                     beta = min(beta, V)
@@ -171,18 +197,22 @@ def util_function(board):
     return
 
 
-def eval_function(board):
+def eval_function(board, local_board_to_play):
+    # Add heuristic function here
     # Evaluates non-terminal global board configs
     # Must coincide (be equal to) util_function on terminal global board configs
     # This also might have to change
-    return check_3x3_win(board)
+    all_valid_moves = valid_moves_3x3_global(board, local_board_to_play, False)
+    # convert to local coordinates
+    
 
 
-def write_to_move_file(board):
+
+def write_to_move_file(board, local_board_to_play):
     move_file = open("move_file", "w")
     # We will want to change this to whatever move that ab pruning finds the most beneficial
-    bestX, bestY = minimax_decision(board)
-    move_file.write("jonilo" + " " + str(bestX) + " " + str(bestY) + "\n")
+    best_coord = minimax_decision(board, local_board_to_play)
+    move_file.write("jonilo" + " " + str(best_coord[0]) + " " + str(best_coord[1]) + "\n")
     move_file.close()
 
 
