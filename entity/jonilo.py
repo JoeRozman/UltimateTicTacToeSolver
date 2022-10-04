@@ -133,7 +133,7 @@ def minimax_decision(board, local_board_to_play):
 
 
 def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
-    if(valid_moves_3x3_global(board, local_board_to_play, isMaxPlayer) == []):
+    if not valid_moves_3x3_global(board, local_board_to_play, isMaxPlayer):
         score = util_function(board)
     else:
         score = eval_function(board, isMaxPlayer)
