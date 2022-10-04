@@ -17,8 +17,9 @@ OPPONENT_MARKER = 2
 LOSS = -1
 DRAW = 0
 WIN = 1
+BIG_BOARD_REP_WIN = 10
 BOARD = np.zeros((9, 9), dtype=int)
-BIG_BOARD_REP = np.zeros((3, 3), dtype=int)
+BIG_BOARD_REP = np.zeros((9), dtype=int)
 
 WIN_INDICES = [[0, 1, 2],
                [3, 4, 5],
@@ -49,12 +50,12 @@ def main():
             if os.stat("move_file").st_size == 0:
                 # if it is empty, then write to move_file
                 get_last_move_and_board("first_four_moves")
-                os.remove("jonilo.go")
+                # os.remove("jonilo.go")
                 exists = False
             else:
                 # if it is not empty, then read the move_file and make the move
                 get_last_move_and_board("move_file")
-                os.remove("jonilo.go")
+                # os.remove("jonilo.go")
                 exists = False
 
 
@@ -140,6 +141,9 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
     if not moves:
         return util_function(board)
 
+    if score == BIG_BOARD_REP_WIN:
+        return WIN
+
     # if not valid_moves_3x3_global(board, local_board_to_play, isMaxPlayer):
     #     score = util_function(board)
     # else:
@@ -203,10 +207,10 @@ def util_function(board):
         return DRAW
     else:
         for indices in WIN_INDICES:
-                if BIG_BOARD_REP[indices[0]].any() == BIG_BOARD_REP[indices[1]].any() and \
-                        BIG_BOARD_REP[indices[1]].any() == BIG_BOARD_REP[indices[2]].any() and \
-                        BIG_BOARD_REP[indices[0]].any() != EMPTY_SPACE:
-                    return WIN
+                if BIG_BOARD_REP[indices[0]].any() == JONILO_MARKER and \
+                        BIG_BOARD_REP[indices[1]].any() == JONILO_MARKER and \
+                        BIG_BOARD_REP[indices[2]].any() == JONILO_MARKER:
+                    return BIG_BOARD_REP_WIN
 
     return DRAW
 
@@ -226,6 +230,10 @@ def eval_function(board, local_board_to_play):
             if board[indices[0]].any() == board[indices[1]].any() and \
                     board[indices[1]].any() == board[indices[2]].any() and \
                     board[indices[0]].any() != EMPTY_SPACE:
+                # mark the BIG_BOARD_REP with the winner
+                BIG_BOARD_REP[local_board_to_play] = JONILO_MARKER
+                if util_function(BIG_BOARD_REP.any()) == BIG_BOARD_REP_WIN:
+                    return BIG_BOARD_REP_WIN
                 return WIN
 
     return DRAW

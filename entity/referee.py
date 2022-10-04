@@ -27,7 +27,7 @@ def clean():
     print('cleaning...')
     patterns = [
         re.compile("move_file"),
-        re.compile("(:?.*).go"),
+        re.compile("(:?.*)\.go"),
         re.compile("end_game"),
         re.compile("first_four_moves")
     ]
