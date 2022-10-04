@@ -120,6 +120,8 @@ def minimax_decision(board, local_board_to_play):
 
                 state[i][j] = EMPTY_SPACE
     print(f"Best Coordinate: {bestCoord}")
+    board[bestCoord[0]][bestCoord[1]] = JONILO_MARKER
+    print(board)
     return bestCoord
 
 
