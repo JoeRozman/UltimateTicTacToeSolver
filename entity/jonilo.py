@@ -2,7 +2,6 @@ import math
 import os
 # import time
 # from tkinter.messagebox import NO
-import time
 
 import numpy as np
 
@@ -239,9 +238,9 @@ def eval_function(board, local_board_to_play):
             #print(f"{indices[0]} {indices[1]} {indices[2]}")
             #print(BIG_BOARD_REP)
             #print(board[local_board_to_play][indices])
-            if board[local_board_to_play][indices[0]].any() == JONILO_MARKER and \
-                    board[local_board_to_play][indices[1]].any() == JONILO_MARKER and \
-                    board[local_board_to_play][indices[2]].any() == JONILO_MARKER:
+            if board[indices[0]].any() == JONILO_MARKER and \
+                    board[indices[1]].any() == JONILO_MARKER and \
+                    board[indices[2]].any() == JONILO_MARKER:
                 # mark the BIG_BOARD_REP with the winner
                 BIG_BOARD_REP[local_board_to_play] = JONILO_MARKER
                 if util_function(BIG_BOARD_REP.any()) == BIG_BOARD_REP_WIN:
