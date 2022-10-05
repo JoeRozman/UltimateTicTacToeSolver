@@ -260,6 +260,7 @@ def eval_function(board, local_board_to_play):
 
 
 def write_to_move_file(board, local_board_to_play):
+    time.sleep(.1)
     move_file = open("move_file", "r+")
     # We will want to change this to whatever move that ab pruning finds the most beneficial
     best_coord = minimax_decision(board, local_board_to_play)
