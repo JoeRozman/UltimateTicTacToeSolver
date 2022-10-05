@@ -24,7 +24,7 @@ BIG_BOARD_REP_DRAW = 0
 BIG_BOARD_REP_WIN = 10
 
 BOARD = np.zeros((9, 9), dtype=int)
-BIG_BOARD_REP = np.zeros((9), dtype=int)
+BIG_BOARD_REP = np.zeros(9, dtype=int)
 
 WIN_INDICES = [[0, 1, 2],
                [3, 4, 5],
@@ -47,7 +47,6 @@ def main():
     # then wait for jonilo.go file to be created
     # repeat
     exists = False
-    print(BIG_BOARD_REP)
     while True:
         if os.path.exists("jonilo.go"):
             exists = True
@@ -138,13 +137,13 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
     if local_board_to_play == -1:
         for i in range(0, 9):
             moves += valid_moves_3x3_global(board[i], i, isMaxPlayer)
-        score = eval_function(board, local_board_to_play)
+        score = util_function(BIG_BOARD_REP)
     else:
         moves = valid_moves_3x3_global(board[local_board_to_play], local_board_to_play, isMaxPlayer)
         score = eval_function(board, local_board_to_play)
 
     if not moves:
-        return util_function(board)
+        return util_function(BIG_BOARD_REP)
 
     if score == BIG_BOARD_REP_WIN:
         return WIN
@@ -208,17 +207,20 @@ def util_function(board):
     # current player
     # Check if there is a check for global board if not we have to implement it ourselves
 
-    if EMPTY_SPACE not in BIG_BOARD_REP:
+    if EMPTY_SPACE not in board:
         return DRAW
     else:
         for indices in WIN_INDICES:
-            if BIG_BOARD_REP[indices[0]].any() == JONILO_MARKER and \
-                    BIG_BOARD_REP[indices[1]].any() == JONILO_MARKER and \
-                    BIG_BOARD_REP[indices[2]].any() == JONILO_MARKER:
+            if board[indices[0]].any() == JONILO_MARKER and \
+                    board[indices[1]].any() == JONILO_MARKER and \
+                    board[indices[2]].any() == JONILO_MARKER:
+
                 return BIG_BOARD_REP_WIN
-            elif BIG_BOARD_REP[indices[0]].any() == OPPONENT_MARKER and \
-                    BIG_BOARD_REP[indices[1]].any() == OPPONENT_MARKER and \
-                    BIG_BOARD_REP[indices[2]].any() == OPPONENT_MARKER:
+
+            elif board[indices[0]].any() == OPPONENT_MARKER and \
+                    board[indices[1]].any() == OPPONENT_MARKER and \
+                    board[indices[2]].any() == OPPONENT_MARKER:
+
                 return BIG_BOARD_REP_LOSS
 
     return DRAW
@@ -234,24 +236,23 @@ def eval_function(board, local_board_to_play):
     if EMPTY_SPACE not in board:
         return DRAW
     else:
-        # print(board[WIN_INDICES[0][0]])
         for indices in WIN_INDICES:
-            #print(f"{indices[0]} {indices[1]} {indices[2]}")
-            #print(BIG_BOARD_REP)
-            #print(board[local_board_to_play][indices])
             if board[local_board_to_play][indices[0]].any() == JONILO_MARKER and \
                     board[local_board_to_play][indices[1]].any() == JONILO_MARKER and \
                     board[local_board_to_play][indices[2]].any() == JONILO_MARKER:
+
                 # mark the BIG_BOARD_REP with the winner
                 BIG_BOARD_REP[local_board_to_play] = JONILO_MARKER
-                if util_function(BIG_BOARD_REP.any()) == BIG_BOARD_REP_WIN:
+                if util_function(BIG_BOARD_REP) == BIG_BOARD_REP_WIN:
                     return BIG_BOARD_REP_WIN
                 return WIN
-            elif board[indices[0]].any() == OPPONENT_MARKER and \
-                    board[indices[1]].any() == OPPONENT_MARKER and \
-                    board[indices[2]].any() == OPPONENT_MARKER:
-                BIG_BOARD_REP[local_board_to_play] = JONILO_MARKER
-                if util_function(BIG_BOARD_REP.any()) == BIG_BOARD_REP_WIN:
+
+            elif board[local_board_to_play][indices[0]].any() == OPPONENT_MARKER and \
+                    board[local_board_to_play][indices[1]].any() == OPPONENT_MARKER and \
+                    board[local_board_to_play][indices[2]].any() == OPPONENT_MARKER:
+
+                BIG_BOARD_REP[local_board_to_play] = OPPONENT_MARKER
+                if util_function(BIG_BOARD_REP) == BIG_BOARD_REP_LOSS:
                     return BIG_BOARD_REP_LOSS
                 return LOSS
 
