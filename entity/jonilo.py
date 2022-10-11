@@ -67,6 +67,7 @@ def main():
                 exists = False
 
 
+
 def get_last_move_and_board(file_name_to_open):
     with open(file_name_to_open, "r") as fp:
         # Get last non-empty line from file
