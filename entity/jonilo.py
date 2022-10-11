@@ -11,17 +11,20 @@ from core_gameplay import local_to_global, global_to_local, valid_moves, valid_m
 MAX = math.inf
 MIN = -math.inf
 
+NUM_OF_SMALL_WINS = 0
+NUM_OF_SMALL_LOSSES = 0
+
 EMPTY_SPACE = 0
 JONILO_MARKER = 1
 OPPONENT_MARKER = 2
 
-LOSS = -1
+LOSS = -5
 DRAW = 0
-WIN = 1
+WIN = 5
 
-BIG_BOARD_REP_LOSS = -10
+BIG_BOARD_REP_LOSS = -100
 BIG_BOARD_REP_DRAW = 0
-BIG_BOARD_REP_WIN = 10
+BIG_BOARD_REP_WIN = 100
 
 BOARD = np.zeros((9, 9), dtype=int)
 BIG_BOARD_REP = np.zeros(9, dtype=int)
@@ -214,13 +217,16 @@ def util_function(board):
             if board[indices[0]].any() == JONILO_MARKER and \
                     board[indices[1]].any() == JONILO_MARKER and \
                     board[indices[2]].any() == JONILO_MARKER:
-
+                global NUM_OF_SMALL_WINS
+                NUM_OF_SMALL_WINS += 1
                 return BIG_BOARD_REP_WIN
 
             elif board[indices[0]].any() == OPPONENT_MARKER and \
                     board[indices[1]].any() == OPPONENT_MARKER and \
                     board[indices[2]].any() == OPPONENT_MARKER:
 
+                global NUM_OF_SMALL_LOSSES
+                NUM_OF_SMALL_LOSSES += 1
                 return BIG_BOARD_REP_LOSS
 
     return DRAW
@@ -233,8 +239,13 @@ def eval_function(board, local_board_to_play):
     # This also might have to change
     # all_valid_moves = valid_moves_3x3_global(board, local_board_to_play, False)
     # convert to local coordinates
+
     if EMPTY_SPACE not in board:
         return DRAW
+
+    elif is_small_center(board, local_board_to_play) or is_in_center(board):
+        return 3
+
     else:
         for indices in WIN_INDICES:
             if board[local_board_to_play][indices[0]].any() == JONILO_MARKER and \
@@ -256,7 +267,20 @@ def eval_function(board, local_board_to_play):
                     return BIG_BOARD_REP_LOSS
                 return LOSS
 
-    return DRAW
+    return NUM_OF_SMALL_WINS - NUM_OF_SMALL_LOSSES
+
+
+def is_small_center(board, local_board_to_play):
+    if board[local_board_to_play][4].any() == JONILO_MARKER:
+        return True
+    return False
+
+
+def is_in_center(board):
+    for i in range(9):
+        if board[4][i].any() == JONILO_MARKER:
+            return True
+        return False
 
 
 def write_to_move_file(board, local_board_to_play):
