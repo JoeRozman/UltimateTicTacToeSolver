@@ -105,11 +105,16 @@ def minimax_decision(board, local_board_to_play):
     # get all valid moves
     valid_moves_list = valid_moves(board, local_board_to_play, False)
     valid_moves_list_3x3 = []
+    #print(valid_moves_list)
+    #time.sleep(1)
 
     for moves in valid_moves_list:
         local_move = global_to_local(moves)
         local_move.reverse()
         valid_moves_list_3x3.append(local_move)
+
+    if not valid_moves_list_3x3:
+        print("empty valid moves shouldn't happen")
 
     bestValue = MIN
     bestCoord = [MIN, MIN]
