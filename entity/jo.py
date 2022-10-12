@@ -154,9 +154,6 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
     if not moves:
         return util_function(BIG_BOARD_REP)
 
-    if score == BIG_BOARD_REP_WIN:
-        return WIN
-
     # if not valid_moves_3x3_global(board, local_board_to_play, isMaxPlayer):
     #     score = util_function(board)
     # else:
@@ -223,13 +220,11 @@ def util_function(board):
             if board[indices[0]].any() == JONILO_MARKER and \
                     board[indices[1]].any() == JONILO_MARKER and \
                     board[indices[2]].any() == JONILO_MARKER:
-
                 return BIG_BOARD_REP_WIN
 
             elif board[indices[0]].any() == OPPONENT_MARKER and \
                     board[indices[1]].any() == OPPONENT_MARKER and \
                     board[indices[2]].any() == OPPONENT_MARKER:
-
                 return BIG_BOARD_REP_LOSS
 
     return DRAW
@@ -287,7 +282,7 @@ def eval_function(board, local_board_to_play):
                     return -10
 
                 return LOSS
-    print(f"NUM_OF_SMALL_WINS: {NUM_OF_SMALL_WINS}\nNUM_OF_SMALL_LOSSES: {NUM_OF_SMALL_LOSSES}")
+
     return NUM_OF_SMALL_WINS - NUM_OF_SMALL_LOSSES
 
 
@@ -316,7 +311,7 @@ def write_to_move_file(board, local_board_to_play):
 
 def move_file_output(board):
     output = ""
-    agentName = "Jo"
+    agentName = "Jonilo"
     boardNum = 2
     locationNum = 2
     i = 0
