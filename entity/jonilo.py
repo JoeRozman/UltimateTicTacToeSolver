@@ -291,7 +291,6 @@ def eval_function(board, local_board_to_play):
 
                 return LOSS
 
-    print(f"NUM_OF_SMALL_WINS: {NUM_OF_SMALL_WINS}\nNUM_OF_SMALL_LOSSES: {NUM_OF_SMALL_LOSSES}")
     return NUM_OF_SMALL_WINS - NUM_OF_SMALL_LOSSES
 
 
