@@ -223,16 +223,11 @@ def util_function(board):
             if board[indices[0]].any() == JONILO_MARKER and \
                     board[indices[1]].any() == JONILO_MARKER and \
                     board[indices[2]].any() == JONILO_MARKER:
-                global NUM_OF_SMALL_WINS
-                NUM_OF_SMALL_WINS += 1
                 return BIG_BOARD_REP_WIN
 
             elif board[indices[0]].any() == OPPONENT_MARKER and \
                     board[indices[1]].any() == OPPONENT_MARKER and \
                     board[indices[2]].any() == OPPONENT_MARKER:
-
-                global NUM_OF_SMALL_LOSSES
-                NUM_OF_SMALL_LOSSES += 1
                 return BIG_BOARD_REP_LOSS
 
     return DRAW
