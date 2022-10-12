@@ -154,9 +154,6 @@ def minimax_value(depth, board, isMaxPlayer, alpha, beta, local_board_to_play):
     if not moves:
         return util_function(BIG_BOARD_REP)
 
-    if score == BIG_BOARD_REP_WIN:
-        return WIN
-
     # if not valid_moves_3x3_global(board, local_board_to_play, isMaxPlayer):
     #     score = util_function(board)
     # else:
