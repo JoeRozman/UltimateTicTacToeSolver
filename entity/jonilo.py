@@ -246,11 +246,17 @@ def eval_function(board, local_board_to_play):
     # all_valid_moves = valid_moves_3x3_global(board, local_board_to_play, False)
     # convert to local coordinates
 
+    global NUM_OF_SMALL_WINS
+    global NUM_OF_SMALL_LOSSES
+
     if EMPTY_SPACE not in board:
         return DRAW
 
-    elif is_small_center(board, local_board_to_play) or is_in_center(board):
+    elif is_small_center(board, local_board_to_play, JONILO_MARKER) or is_in_center(board, JONILO_MARKER):
         return 3
+
+    elif is_small_center(board, local_board_to_play, OPPONENT_MARKER) or is_in_center(board, OPPONENT_MARKER):
+        return -3
 
     else:
         for indices in WIN_INDICES:
@@ -262,6 +268,12 @@ def eval_function(board, local_board_to_play):
                 BIG_BOARD_REP[local_board_to_play] = JONILO_MARKER
                 if util_function(BIG_BOARD_REP) == BIG_BOARD_REP_WIN:
                     return BIG_BOARD_REP_WIN
+
+                NUM_OF_SMALL_WINS += 1
+
+                if local_board_to_play == 4:
+                    return 10
+
                 return WIN
 
             elif board[local_board_to_play][indices[0]].any() == OPPONENT_MARKER and \
@@ -271,20 +283,27 @@ def eval_function(board, local_board_to_play):
                 BIG_BOARD_REP[local_board_to_play] = OPPONENT_MARKER
                 if util_function(BIG_BOARD_REP) == BIG_BOARD_REP_LOSS:
                     return BIG_BOARD_REP_LOSS
+
+                NUM_OF_SMALL_LOSSES += 1
+
+                if local_board_to_play == 4:
+                    return -10
+
                 return LOSS
 
+    print(f"NUM_OF_SMALL_WINS: {NUM_OF_SMALL_WINS}\nNUM_OF_SMALL_LOSSES: {NUM_OF_SMALL_LOSSES}")
     return NUM_OF_SMALL_WINS - NUM_OF_SMALL_LOSSES
 
 
-def is_small_center(board, local_board_to_play):
-    if board[local_board_to_play][4].any() == JONILO_MARKER:
+def is_small_center(board, local_board_to_play, marker):
+    if board[local_board_to_play][4].any() == marker:
         return True
     return False
 
 
-def is_in_center(board):
+def is_in_center(board, marker):
     for i in range(9):
-        if board[4][i].any() == JONILO_MARKER:
+        if board[4][i].any() == marker:
             return True
         return False
 
