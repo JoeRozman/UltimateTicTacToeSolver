@@ -51,7 +51,7 @@ def main():
     # repeat
     exists = False
     while True:
-        if os.path.exists("jonilo.go"):
+        if os.path.exists("jo.go"):
             exists = True
         if exists:
             # check if move_file is empty
@@ -77,7 +77,7 @@ def get_last_move_and_board(file_name_to_open):
             else:
                 line = next_line
                 current_position = line.split()
-                if current_position[0] == "jonilo":
+                if current_position[0] == "jo":
                     BOARD[int(current_position[1])][int(current_position[2])] = JONILO_MARKER
                 else:
                     BOARD[int(current_position[1])][int(current_position[2])] = OPPONENT_MARKER
@@ -86,7 +86,7 @@ def get_last_move_and_board(file_name_to_open):
     tokens = line.split()
 
     if len(tokens) > 0:
-        if tokens[0] != "jonilo":
+        if tokens[0] != "jo":
             print("tokens: " + file_name_to_open + " " + str(tokens))
             # Get board and location
             board_num = int(tokens[1])
@@ -294,7 +294,7 @@ def write_to_move_file(board, local_board_to_play):
     # We will want to change this to whatever move that ab pruning finds the most beneficial
     best_coord = minimax_decision(board, local_board_to_play)
     move_file.seek(0)
-    move_file.write(f"jonilo {str(best_coord[0])} {str(best_coord[1])}\n")
+    move_file.write(f"jo {str(best_coord[0])} {str(best_coord[1])}\n")
     move_file.truncate()
     move_file.close()
 

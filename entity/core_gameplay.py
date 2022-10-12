@@ -34,6 +34,8 @@ def check_3x3_win(board):
         if board[indexes[0]] == board[indexes[1]] and \
                 board[indexes[1]] == board[indexes[2]] and \
                 board[indexes[0]] != NO_MARKER:
+            print(board)
+            print(board[indexes[0]])
             return board[indexes[0]]
 
     # If no one has won but the board is full, is draw
